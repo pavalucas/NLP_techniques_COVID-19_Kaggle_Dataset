@@ -1,6 +1,7 @@
 import glob
 import json
 import argparse
+import os
 
 
 class FileReader:
@@ -32,7 +33,7 @@ def append_abstract_body_text_to_file(all_json):
         if idx % (len(all_json) // 10) == 0:
             print('Processing index: {} of {}'.format(idx, len(all_json)))
         content = FileReader(entry)
-        with open('covid_corpus.txt', 'a') as f:
+        with open('covid_corpus.txt', 'a', encoding='utf-8') as f:
             f.write('{}\n\n{}\n\n\n\n\n'.format(content.abstract, content.body_text))
 
 
@@ -41,6 +42,7 @@ def main():
     parser.add_argument('--cord_dataset_path', type=str)
     args = parser.parse_args()
     root_path = args.cord_dataset_path
+    #root_path = 'C:\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     append_abstract_body_text_to_file(all_json)
 
