@@ -22,7 +22,9 @@ def merge_words(f):
     merged_f = merged_f.replace(","," ")
     merged_f = merged_f.replace("."," ")
     merged_f = merged_f.replace("'"," ")
-
+    merged_f = merged_f.replace("("," ")
+    merged_f = merged_f.replace(")"," ")
+    merged_f = merged_f.lower()
     return merged_f
 
 class FileReader:
