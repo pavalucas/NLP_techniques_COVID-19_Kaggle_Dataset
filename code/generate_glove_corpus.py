@@ -3,6 +3,27 @@ import json
 import argparse
 import os
 
+def merge_words(f):
+    symptoms = ['weight loss', 'muscle weakness', 'painful lymph node', 'weight gain', 'chest pain', 'dry mouth',
+                'hearing loss', 'nasal discharge', 'sore throat', 'abdominal pain', 'blood in stool',
+                'fecal incontinence', 'proctalgia fugax', 'bleeding into the skin', 'ecchymosis and bruising',
+                'abnormal posturing', 'aphasia and apraxia', 'muscle cramps', 'flapping tremor',
+                'loss of consciousness', 'neck stiffness', 'paralysis and paresis', 'abnormal vaginal bleeding',
+                'vaginal bleeding in early pregnancy', 'vaginal bleeding in late pregnancy', 'painful intercourse',
+                'pelvic pain', 'vaginal discharge', 'amaurosis fugax', 'blurred vision', 'double vision',
+                'homicidal ideation', 'paranoid ideation', 'suicidal ideation', 'pleuritic chest pain',
+                'sputum production', 'back pain', 'retrograde ejaculation', 'urethral discharge',
+                'urinary frequency', 'urinary incontinence', 'urinary retention']
+    merged_symptoms = [x.replace(" ","_") for x in symptoms]
+    merged_f = f
+    for i in range(len(symptoms)):
+        if symptoms[i] in f:
+            merged_f = merged_f.replace(symptoms[i], merged_symptoms[i])
+    merged_f = merged_f.replace(","," ")
+    merged_f = merged_f.replace("."," ")
+    merged_f = merged_f.replace("'"," ")
+
+    return merged_f
 
 class FileReader:
     def __init__(self, file_path):
@@ -34,8 +55,9 @@ def append_abstract_body_text_to_file(all_json):
             print('Processing index: {} of {}'.format(idx, len(all_json)))
         content = FileReader(entry)
         with open('covid_corpus.txt', 'a', encoding='utf-8') as f:
-            f.write('{}\n\n{}\n\n\n\n\n'.format(content.abstract, content.body_text))
-
+            a = merge_words(content.abstract)
+            b = merge_words(content.body_text)
+            f.write('{}\n\n{}\n\n\n\n\n'.format(a,b))
 
 def main():
     parser = argparse.ArgumentParser()
@@ -45,6 +67,7 @@ def main():
     #root_path = 'C:\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     append_abstract_body_text_to_file(all_json)
+
 
 if __name__ == "__main__":
     main()
