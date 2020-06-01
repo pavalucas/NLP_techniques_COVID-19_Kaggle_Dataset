@@ -1,9 +1,10 @@
 import glob
 import json
 import argparse
-import os
+import string
 
-def merge_words(f):
+
+def merge_and_clean_words(text):
     symptoms = ['weight loss', 'muscle weakness', 'painful lymph node', 'weight gain', 'chest pain', 'dry mouth',
                 'hearing loss', 'nasal discharge', 'sore throat', 'abdominal pain', 'blood in stool',
                 'fecal incontinence', 'proctalgia fugax', 'bleeding into the skin', 'ecchymosis and bruising',
@@ -14,18 +15,15 @@ def merge_words(f):
                 'homicidal ideation', 'paranoid ideation', 'suicidal ideation', 'pleuritic chest pain',
                 'sputum production', 'back pain', 'retrograde ejaculation', 'urethral discharge',
                 'urinary frequency', 'urinary incontinence', 'urinary retention']
-    merged_symptoms = [x.replace(" ","_") for x in symptoms]
-    merged_f = f
+    merged_symptoms = [x.replace(" ", "_") for x in symptoms]
+    merged_text = text.lower()
+    for punctuation in string.punctuation:
+        merged_text = merged_text.replace(punctuation, " ")
     for i in range(len(symptoms)):
-        if symptoms[i] in f:
-            merged_f = merged_f.replace(symptoms[i], merged_symptoms[i])
-    merged_f = merged_f.replace(","," ")
-    merged_f = merged_f.replace("."," ")
-    merged_f = merged_f.replace("'"," ")
-    merged_f = merged_f.replace("("," ")
-    merged_f = merged_f.replace(")"," ")
-    merged_f = merged_f.lower()
-    return merged_f
+        if symptoms[i] in merged_text:
+            merged_text = merged_text.replace(symptoms[i], merged_symptoms[i])
+    return merged_text
+
 
 class FileReader:
     def __init__(self, file_path):
@@ -57,9 +55,10 @@ def append_abstract_body_text_to_file(all_json):
             print('Processing index: {} of {}'.format(idx, len(all_json)))
         content = FileReader(entry)
         with open('covid_corpus.txt', 'a', encoding='utf-8') as f:
-            a = merge_words(content.abstract)
-            b = merge_words(content.body_text)
-            f.write('{}\n\n{}\n\n\n\n\n'.format(a,b))
+            a = merge_and_clean_words(content.abstract)
+            b = merge_and_clean_words(content.body_text)
+            f.write('{}\n\n{}\n\n\n\n\n'.format(a, b))
+
 
 def main():
     parser = argparse.ArgumentParser()
