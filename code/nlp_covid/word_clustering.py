@@ -13,36 +13,44 @@ from numbers import Number
 from pandas import DataFrame
 import numpy as np
 import os, sys, codecs, argparse, pprint, time
-from nlp_covid.utils import *
+from code.nlp_covid.utils import *
 
 VECTOR_FILE = 'vectors.txt'
 VOCAB_FILE = 'vocab.txt'
 TOP_N = 20
 
 SYMPTOMS = ['weight loss', 'chills', 'shivering', 'convulsions', 'deformity', 'discharge', 'dizziness', 'vertigo',
-            'fatigue','malaise','asthenia','hypothermia','jaundice','muscle weakness','pyrexia','sweats',
-            'swelling','swollen','painful lymph node','weight gain','arrhythmia','bradycardia','chest pain',
-            'claudication','palpitations','tachycardia','dry mouth','epistaxis','halitosis','hearing loss',
-            'nasal discharge','otalgia','otorrhea','sore throat','toothache','tinnitus', 'trismus', 'abdominal pain',
+            'fatigue', 'malaise', 'asthenia', 'hypothermia', 'jaundice', 'muscle weakness', 'pyrexia', 'sweats',
+            'swelling', 'swollen', 'painful lymph node', 'weight gain', 'arrhythmia', 'bradycardia', 'chest pain',
+            'claudication', 'palpitations', 'tachycardia', 'dry mouth', 'epistaxis', 'halitosis', 'hearing loss',
+            'nasal discharge', 'otalgia', 'otorrhea', 'sore throat', 'toothache', 'tinnitus', 'trismus',
+            'abdominal pain',
             'fever', 'bloating', 'belching', 'bleeding', 'blood in stool', 'melena', 'hematochezia', 'constipation',
-            'diarrhea', 'dysphagia', 'dyspepsia', 'fecal incontinence', 'flatulence', 'heartburn', 'nausea', 'odynophagia',
-            'proctalgia fugax', 'pyrosis', 'steatorrhea', 'vomiting', 'alopecia', 'hirsutism', 'hypertrichosis', 'abrasion',
+            'diarrhea', 'dysphagia', 'dyspepsia', 'fecal incontinence', 'flatulence', 'heartburn', 'nausea',
+            'odynophagia',
+            'proctalgia fugax', 'pyrosis', 'steatorrhea', 'vomiting', 'alopecia', 'hirsutism', 'hypertrichosis',
+            'abrasion',
             'anasarca', 'bleeding into the skin', 'petechia', 'purpura', 'ecchymosis and bruising', 'blister', 'edema',
-            'itching', 'laceration', 'rash', 'urticaria', 'abnormal posturing', 'acalculia', 'agnosia', 'alexia', 'amnesia',
+            'itching', 'laceration', 'rash', 'urticaria', 'abnormal posturing', 'acalculia', 'agnosia', 'alexia',
+            'amnesia',
             'anomia', 'anosognosia', 'aphasia and apraxia', 'apraxia', 'ataxia', 'cataplexy', 'confusion', 'dysarthria',
             'dysdiadochokinesia', 'dysgraphia', 'hallucination', 'headache', 'akinesia', 'bradykinesia', 'akathisia',
-            'athetosis', 'ballismus', 'blepharospasm', 'chorea', 'dystonia', 'fasciculation', 'muscle cramps', 'myoclonus',
+            'athetosis', 'ballismus', 'blepharospasm', 'chorea', 'dystonia', 'fasciculation', 'muscle cramps',
+            'myoclonus',
             'opsoclonus', 'tic', 'tremor', 'flapping tremor', 'insomnia', 'loss of consciousness', 'syncope',
             'neck stiffness', 'opisthotonus', 'paralysis and paresis', 'paresthesia', 'prosopagnosia', 'somnolence',
             'abnormal vaginal bleeding', 'vaginal bleeding in early pregnancy', 'miscarriage',
             'vaginal bleeding in late pregnancy', 'amenorrhea', 'infertility', 'painful intercourse', 'pelvic pain',
             'vaginal discharge', 'amaurosis fugax', 'amaurosis', 'blurred vision', 'double vision', 'exophthalmos',
-            'mydriasis', 'miosis', 'nystagmus', 'amusia', 'anhedonia', 'anxiety', 'apathy', 'confabulation', 'depression',
-            'delusion', 'euphoria', 'homicidal ideation', 'irritability', 'mania', 'paranoid ideation', 'suicidal ideation',
+            'mydriasis', 'miosis', 'nystagmus', 'amusia', 'anhedonia', 'anxiety', 'apathy', 'confabulation',
+            'depression',
+            'delusion', 'euphoria', 'homicidal ideation', 'irritability', 'mania', 'paranoid ideation',
+            'suicidal ideation',
             'apnea', 'hypopnea', 'cough', 'dyspnea', 'bradypnea', 'tachypnea', 'orthopnea', 'platypnea', 'trepopnea',
-            'hemoptysis', 'pleuritic chest pain', 'sputum production', 'arthralgia', 'back pain', 'sciatica', 'Urologic',
+            'hemoptysis', 'pleuritic chest pain', 'sputum production', 'arthralgia', 'back pain', 'sciatica',
+            'Urologic',
             'dysuria', 'hematospermia', 'hematuria', 'impotence', 'polyuria', 'retrograde ejaculation', 'strangury',
-            'urethral discharge', 'urinary frequency', 'urinary incontinence','urinary retention']
+            'urethral discharge', 'urinary frequency', 'urinary incontinence', 'urinary retention']
 
 
 def check_int(s):
@@ -80,7 +88,6 @@ def get_vectors_from_symptom_cluster(label_vector_dict, cluster_to_words):
                 return
 
 
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--vector_dim', '-d',
@@ -106,6 +113,7 @@ def parse_args():
                              '-1 = all cores. '
                              'More cores = less time, more memory (default: -1).')
     return parser.parse_args()
+
 
 def main():
     args = parse_args()

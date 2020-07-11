@@ -7,6 +7,7 @@ from sklearn.cluster import KMeans
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
+
 def get_data_from_vectors():
     # Loading Vector file
     file = open("vectors_2020_06_01.txt", "r")
@@ -23,8 +24,10 @@ def get_data_from_vectors():
         data.append(split_row)
     return data
 
+
 def main():
     pass
+
 
 if __name__ == '__main__':
     main()

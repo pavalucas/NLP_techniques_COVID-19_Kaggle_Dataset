@@ -2,7 +2,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import argparse
 import glob
 from textblob import TextBlob
-from nlp_covid.utils import *
+from code.nlp_covid.utils import *
 from sklearn.cluster import KMeans
 
 
@@ -55,6 +55,7 @@ def main():
     abstract_list = append_abstract_body_text_to_file(all_json[:100])
     bow_matrix, count_vec = get_bow(abstract_list)
     show_clusters(bow_matrix, count_vec)
+
 
 if __name__ == "__main__":
     main()
