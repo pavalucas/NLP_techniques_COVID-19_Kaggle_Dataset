@@ -1,3 +1,7 @@
 dataset/*
 glove/*
 .idea/
+covid_corpus.txt
+vectors.txt
+vocab.txt
+CORD-19-research-challenge_Dataset

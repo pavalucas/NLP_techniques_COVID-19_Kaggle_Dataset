@@ -3,8 +3,6 @@ import json
 import argparse
 from code.nlp_covid.utils import *
 
-ROOT_DIR = sys.path[1]
-
 
 def append_abstract_body_text_to_file(all_json):
     for idx, entry in enumerate(all_json):
@@ -21,9 +19,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cord_dataset_path', type=str)
     args = parser.parse_args()
-    # root_path = args.cord_dataset_path
-    root_path = ROOT_DIR + '\\glove\\CORD-19-research-challenge_Dataset\\'
-
+    root_path = args.cord_dataset_path
+    # root_path = 'C:\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     append_abstract_body_text_to_file(all_json)
 

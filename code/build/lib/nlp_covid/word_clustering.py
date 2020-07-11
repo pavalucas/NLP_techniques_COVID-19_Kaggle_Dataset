@@ -13,16 +13,10 @@ from numbers import Number
 from pandas import DataFrame
 import numpy as np
 import os, sys, codecs, argparse, pprint, time
-import pkg_resources
 from code.nlp_covid.utils import *
 
-ROOT_DIR = sys.path[1]
-PROJECT_DIR = os.getcwd()
-
-# VECTOR_FILE = 'vectors.txt'
-# VOCAB_FILE = 'vocab.txt'
-VECTOR_FILE = PROJECT_DIR + '\\vectors.txt'
-VOCAB_FILE = PROJECT_DIR + '\\vocab.txt'
+VECTOR_FILE = 'vectors.txt'
+VOCAB_FILE = 'vocab.txt'
 TOP_N = 20
 
 SYMPTOMS = ['weight loss', 'chills', 'shivering', 'convulsions', 'deformity', 'discharge', 'dizziness', 'vertigo',
@@ -69,7 +63,7 @@ def check_int(s):
 
 def get_term_count():
     result = {}
-    with open(VOCAB_FILE, 'r', encoding="utf-8") as f:
+    with open(VOCAB_FILE, 'r') as f:
         for line in f:
             line_list = line.split()
             result[line_list[0]] = int(line_list[1])
@@ -124,8 +118,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    # filename = path = 'data/{}'.format(get_cache_filename_from_args(args))
-    filename = path = ROOT_DIR + '\\code\\data\\{}'.format(get_cache_filename_from_args(args))
+    filename = path = 'data/{}'.format(get_cache_filename_from_args(args))
     start_time = time.time()
 
     # get count for each term

@@ -81,7 +81,7 @@ def get_label_dictionaries(labels_array):
 
 
 def save_json(filename, results):
-    with open(filename, 'w', encoding="utf-8") as f:
+    with open(filename, 'w') as f:
         json.dump(results, f)
 
 
