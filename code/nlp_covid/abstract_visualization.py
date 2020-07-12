@@ -56,8 +56,9 @@ def textblob_tokenizer(str_input):
     return words
 
 
-def show_clusters(bow_matrix, count_vect):
-    num_clusters = 4
+def show_clusters(bow_matrix, count_vect, num_clusters):
+    cluster_list = []
+
     km = KMeans(n_clusters=num_clusters)
     km.fit(bow_matrix)
     print("Top terms per cluster:")
@@ -66,6 +67,10 @@ def show_clusters(bow_matrix, count_vect):
     for i in range(num_clusters):
         top_ten_words = [terms[ind] for ind in order_centroids[i, :5]]
         print("Cluster {}: {}".format(i, ' '.join(top_ten_words)))
+        str1 = ' '.join(top_ten_words)
+        cluster_list.append(str1)
+
+    return cluster_list
 
 
 def main():
@@ -77,28 +82,33 @@ def main():
     root_path = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     # Total papers: 139694
-    abstract_list = append_abstract_body_text_to_file(all_json[:500])
+    abstract_list = append_abstract_body_text_to_file(all_json[:1000])
     print(abstract_list)
 
-    # visualize_kmeans_scikit(abstract_list)
-
-    visualize_pca_tsne(abstract_list)
-
-    corpus_target = ['fever', 'back_pain', 'tachycardia']
-
-    visualize_yellowbrick('t-sne', 'count', abstract_list, corpus_target)
-
-    visualize_yellowbrick('t-sne', 'tfidf', abstract_list, corpus_target)
-
-    visualize_yellowbrick('umap', 'count', abstract_list, corpus_target)
-
-    visualize_yellowbrick('umap', 'tfidf', abstract_list, corpus_target)
-
     bow_matrix, count_vec = get_bow(abstract_list)
-    show_clusters(bow_matrix, count_vec)
+
+    num_clusters = 100
+
+    cluster_lst = show_clusters(bow_matrix, count_vec, num_clusters)
+
+    x_value = 'cancer'
+    y_value = 'pneumonia'
+    # visualize_kmeans_scikit(cluster_lst, x_value, y_value)
+
+    visualize_pca_tsne(cluster_lst)
+
+    corpus_target = ['fever', 'back_pain', 'tachycardia', 'diarrhea']
+
+    visualize_yellowbrick('t-sne', 'count', cluster_lst, corpus_target)
+
+    visualize_yellowbrick('t-sne', 'tfidf', cluster_lst, corpus_target)
+
+    visualize_yellowbrick('umap', 'count', cluster_lst, corpus_target)
+
+    visualize_yellowbrick('umap', 'tfidf', cluster_lst, corpus_target)
 
 
-def visualize_kmeans_scikit(texts_list):
+def visualize_kmeans_scikit(texts_list, x_value, y_value):
     # http://jonathansoma.com/lede/algorithms-2017/classes/clustering/k-means-clustering-with-scikit-learn/
 
     texts = [
@@ -119,15 +129,15 @@ def visualize_kmeans_scikit(texts_list):
                           stop_words='english',
                           use_idf=True,
                           max_features=2)
-    matrix = vec.fit_transform(texts)
+    matrix = vec.fit_transform(texts_list)
     df = pd.DataFrame(matrix.toarray(), columns=vec.get_feature_names())
     print(df)
 
     colors = cm.rainbow(np.linspace(0, 1, 4))
-    ax = df.plot(kind='scatter', x='fish', y='penni', alpha=0.2, s=200, color=[colors[1]])
+    ax = df.plot(kind='scatter', x=x_value, y=y_value, alpha=0.2, s=200, color=[colors[1]])
 
-    ax.set_xlabel("Fish")
-    ax.set_ylabel("Penni")
+    ax.set_xlabel(x_value.upper())
+    ax.set_ylabel(y_value.upper())
 
 
 # ********************************************************************************************************************
