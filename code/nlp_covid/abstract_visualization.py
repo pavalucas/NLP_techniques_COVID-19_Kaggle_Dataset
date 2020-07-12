@@ -188,7 +188,7 @@ def visualize_pca_tsne(texts_list):
 # ********************************************************************************************************************
 
 
-def visualize_yellowbrick(dim_reduction, encoding, corpus_data, corpus_target, labels=False, alpha=0.7, metric=None):
+def visualize_yellowbrick(dim_reduction, encoding, corpus_data, corpus_target, labels=True, alpha=0.7, metric=None):
     # https://pypi.org/project/yellowbrick/
     # https://github.com/DistrictDataLabs/yellowbrick/tree/develop/examples
     # https://medium.com/@sangarshananveera/rapid-text-visualization-with-yellowbrick-51d3499c9333
