@@ -1,7 +1,7 @@
 import glob
 import json
 import argparse
-from code.nlp_covid.utils import *
+from src.nlp_covid.utils import *
 
 ROOT_DIR = sys.path[1]
 

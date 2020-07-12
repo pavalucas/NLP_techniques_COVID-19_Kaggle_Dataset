@@ -1,7 +1,7 @@
 import glob
 import json
 import argparse
-from code.nlp_covid.utils import *
+from src.nlp_covid.utils import *
 
 
 def append_abstract_body_text_to_file(all_json):

@@ -3,11 +3,12 @@ import argparse
 import glob
 import os, sys
 from textblob import TextBlob
-from code.nlp_covid.utils import *
+from nlp_covid.utils import *
 from sklearn.cluster import KMeans
 
-ROOT_DIR = sys.path[1]
-PROJECT_DIR = os.getcwd()
+
+# ROOT_DIR = sys.path[1]
+# PROJECT_DIR = os.getcwd()
 
 
 def append_abstract_body_text_to_file(all_json):
@@ -54,10 +55,12 @@ def main():
     parser.add_argument('--cord_dataset_path', type=str)
     args = parser.parse_args()
     # root_path = args.cord_dataset_path
-    root_path = ROOT_DIR + '\\glove\\CORD-19-research-challenge_Dataset\\'
-    print("Path to read ---> " + root_path)
+    #root_path = '/media/sf_SharedVM/dataset'
+    root_path = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
+    # Total papers: 139694
     abstract_list = append_abstract_body_text_to_file(all_json[:100])
+    print(abstract_list)
     bow_matrix, count_vec = get_bow(abstract_list)
     show_clusters(bow_matrix, count_vec)
 

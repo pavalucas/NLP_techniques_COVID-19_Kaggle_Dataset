@@ -14,9 +14,9 @@ from pandas import DataFrame
 import numpy as np
 import os, sys, codecs, argparse, pprint, time
 import pkg_resources
-from code.nlp_covid.utils import *
+from nlp_covid.utils import *
 
-ROOT_DIR = sys.path[1]
+ROOT_DIR = sys.path[0]
 PROJECT_DIR = os.getcwd()
 
 # VECTOR_FILE = 'vectors.txt'
@@ -125,7 +125,7 @@ def main():
     args = parse_args()
 
     # filename = path = 'data/{}'.format(get_cache_filename_from_args(args))
-    filename = path = ROOT_DIR + '\\code\\data\\{}'.format(get_cache_filename_from_args(args))
+    filename = path = ROOT_DIR + '\\data\\{}'.format(get_cache_filename_from_args(args))
     start_time = time.time()
 
     # get count for each term

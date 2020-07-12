@@ -2,7 +2,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import argparse
 import glob
 from textblob import TextBlob
-from code.nlp_covid.utils import *
+from src.nlp_covid.utils import *
 from sklearn.cluster import KMeans
 
 

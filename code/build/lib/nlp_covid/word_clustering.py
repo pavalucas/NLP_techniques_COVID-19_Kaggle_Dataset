@@ -13,7 +13,7 @@ from numbers import Number
 from pandas import DataFrame
 import numpy as np
 import os, sys, codecs, argparse, pprint, time
-from code.nlp_covid.utils import *
+from src.nlp_covid.utils import *
 
 VECTOR_FILE = 'vectors.txt'
 VOCAB_FILE = 'vocab.txt'
