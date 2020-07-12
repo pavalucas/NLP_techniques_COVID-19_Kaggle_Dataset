@@ -64,9 +64,11 @@ def show_clusters(bow_matrix, count_vect, num_clusters):
     print("Top terms per cluster:")
     order_centroids = km.cluster_centers_.argsort()[:, ::-1]
     terms = count_vect.get_feature_names()
+
     for i in range(num_clusters):
         top_ten_words = [terms[ind] for ind in order_centroids[i, :5]]
         print("Cluster {}: {}".format(i, ' '.join(top_ten_words)))
+
         str1 = ' '.join(top_ten_words)
         cluster_list.append(str1)
 
@@ -78,17 +80,22 @@ def main():
     parser.add_argument('--cord_dataset_path', type=str)
     args = parser.parse_args()
     # root_path = args.cord_dataset_path
-    root_path = '/media/sf_SharedVM/dataset'
-    #root_path = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
+    # root_path = '/media/sf_SharedVM/dataset'
+    root_path = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     # Total papers: 139694
-    abstract_list = append_abstract_body_text_to_file(all_json[:1000])
+    abstract_list = append_abstract_body_text_to_file(all_json[:100])
     print(abstract_list)
 
     bow_matrix, count_vec = get_bow(abstract_list)
 
-    num_clusters = 100
+    num_clusters = 10
 
+    # visualize_clusters(bow_matrix, num_clusters)
+
+    visualize_word_vectors_tSNE(bow_matrix)
+
+    # cluster_lst = abstract_list
     cluster_lst = show_clusters(bow_matrix, count_vec, num_clusters)
 
     x_value = 'cancer'
@@ -99,14 +106,39 @@ def main():
 
     corpus_target = ['fever', 'back_pain', 'tachycardia', 'diarrhea']
 
-    visualize_yellowbrick('t-sne', 'count', cluster_lst, corpus_target)
+    visualize_yellowbrick('t-sne', 'count', cluster_lst, corpus_target, labels=False)
 
-    visualize_yellowbrick('t-sne', 'tfidf', cluster_lst, corpus_target)
+    visualize_yellowbrick('t-sne', 'tfidf', cluster_lst, corpus_target, labels=False)
 
-    visualize_yellowbrick('umap', 'count', cluster_lst, corpus_target)
+    visualize_yellowbrick('umap', 'count', cluster_lst, corpus_target, labels=False)
 
-    visualize_yellowbrick('umap', 'tfidf', cluster_lst, corpus_target)
+    visualize_yellowbrick('umap', 'tfidf', cluster_lst, corpus_target, labels=False)
 
+
+def visualize_word_vectors_tSNE(bow_matrix):
+    # https://www.kaggle.com/dhanyajothimani/basic-visualization-and-clustering-in-python/data?
+    return True
+
+
+def visualize_clusters(bow_matrix, num_clusters):
+    kmeans = KMeans(2)
+    kmeans.fit(bow_matrix)
+    cluster_labels = kmeans.predict(bow_matrix)
+    centers = kmeans.cluster_centers_
+
+    kmeans_labels = pd.DataFrame(cluster_labels)
+    bow_matrix.insert((bow_matrix.shape[1]), 'kmeans_labels', kmeans_labels)
+
+    # plotting the kmeans clusters
+    plt.figure()
+    plt.scatter(bow_matrix['GDP per capita'], bow_matrix['Perceptions of corruption'], c=kmeans_labels[0], s=50)
+    plt.title('K means clustering')
+    plt.xlabel('GDP per capita')
+    plt.ylabel('Perceptions of corruption')
+    plt.show()
+
+
+# ********************************************************************************************************************
 
 def visualize_kmeans_scikit(texts_list, x_value, y_value):
     # http://jonathansoma.com/lede/algorithms-2017/classes/clustering/k-means-clustering-with-scikit-learn/
