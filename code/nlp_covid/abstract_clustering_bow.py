@@ -1,11 +1,13 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import argparse
 import glob
+import os, sys
 from textblob import TextBlob
 from code.nlp_covid.utils import *
 from sklearn.cluster import KMeans
 
 ROOT_DIR = sys.path[1]
+PROJECT_DIR = os.getcwd()
 
 
 def append_abstract_body_text_to_file(all_json):
@@ -53,6 +55,7 @@ def main():
     args = parser.parse_args()
     # root_path = args.cord_dataset_path
     root_path = ROOT_DIR + '\\glove\\CORD-19-research-challenge_Dataset\\'
+    print("Path to read ---> " + root_path)
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     abstract_list = append_abstract_body_text_to_file(all_json[:100])
     bow_matrix, count_vec = get_bow(abstract_list)
