@@ -112,9 +112,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cord_dataset_path', type=str)
     args = parser.parse_args()
-    root_path = args.cord_dataset_path
+    #root_path = args.cord_dataset_path
     #root_path = '/media/sf_SharedVM/dataset'
-    # root_path = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
+    root_path = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
     all_json = glob.glob('{}/**/*.json'.format(root_path), recursive=True)
     # Total papers: 139694
     abstract_list = append_abstract_body_text_to_file(all_json[:100])
