@@ -1,8 +1,8 @@
 # Main source: https://www.kaggle.com/maksimeren/covid-19-literature-clustering
 
 ROOT_PATH = 'C:\\Users\\amondejar\\Desktop\\SharedVM\\dataset'
-QUANT_PAPERS = 10000
-RANGE_INDEX = 8892
+QUANT_PAPERS = 50000
+RANGE_INDEX = 44557
 # RangeIndex samples:
 # For 10000 papers, we have 8892 entries
 # For 1000 papers, we have 898 entries
